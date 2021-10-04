@@ -13,6 +13,15 @@ struct keyboardSymbol {
     string folder;
 };
 
+void checkClick(vector<keyboardSymbol> keyboardSymbols, int x, int y)
+{
+    for (unsigned int i = 0; i < keyboardSymbols.size(); i++) {
+        if (keyboardSymbols[i].shape.getGlobalBounds().contains(x, y)) {
+            cout << keyboardSymbols[i].str;
+        }
+    }
+}
+
 void drawKeyboard(RenderWindow& window, vector<keyboardSymbol>& keyboardSymbols)
 {
     for (unsigned int i = 0; i < keyboardSymbols.size(); i++) {
@@ -28,9 +37,10 @@ void drawKeyboard(RenderWindow& window, vector<keyboardSymbol>& keyboardSymbols)
 void initKeyboard(vector<keyboardSymbol>& keyboardSymbols)
 {
     string symbols[33]
-            = {"Ğ°", "Ğ±", "Ğ²", "Ğ³", "Ğ´", "Ğµ", "Ñ‘", "Ğ¶", "Ğ·", "Ğ¸", "Ğ¹",
-               "Ğº", "Ğ»", "Ğ¼", "Ğ½", "Ğ¾", "Ğ¿", "Ñ€", "Ñ", "Ñ‚", "Ñƒ", "Ñ„",
-               "Ñ…", "Ñ†", "Ñ‡", "Ñˆ", "Ñ‰", "ÑŠ", "Ñ‹", "ÑŒ", "Ñ", "Ñ", "Ñ"};
+            = {"à", "á", "â", "ã", "ä", "å", "¸", "æ", "ç", "è", "é",
+               "ê", "ë", "ì", "í", "î", "ï", "ğ", "ñ", "ò", "ó", "ô",
+               "õ", "ö", "÷", "ø", "ù", "ú", "û", "ü", "ı", "ş", "ÿ"};
+    cout << symbols[0];
     for (int i = 0; i < 33; i++) {
         keyboardSymbol currentSymbol;
         currentSymbol.str = symbols[i];
@@ -48,6 +58,7 @@ void initKeyboard(vector<keyboardSymbol>& keyboardSymbols)
 
 void startGame(RenderWindow& window, int difficult)
 {
+    setlocale(LC_ALL, "Russian");
     vector<keyboardSymbol> keyboardSymbols;
     initKeyboard(keyboardSymbols);
 
@@ -67,6 +78,10 @@ void startGame(RenderWindow& window, int difficult)
             }
             if (event.type == Event::MouseButtonPressed) {
                 if (event.mouseButton.button == Mouse::Left) {
+                    checkClick(
+                            keyboardSymbols,
+                            event.mouseButton.x,
+                            event.mouseButton.y);
                 }
             }
         }
