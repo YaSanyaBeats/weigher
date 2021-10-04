@@ -24,7 +24,7 @@ vector<secretSymbol> initSecretWord(string word)
     for (unsigned int i = 0; i < word.size(); i++) {
         secretSymbol currentSecretSymbol;
         currentSecretSymbol.str = word[i];
-        currentSecretSymbol.open = true;
+        currentSecretSymbol.open = false;
         secretSymbols.push_back(currentSecretSymbol);
     }
     return secretSymbols;
@@ -132,11 +132,25 @@ void drawWeigher(RenderWindow& window, int step)
     }
 }
 
-void checkClick(vector<keyboardSymbol> keyboardSymbols, int x, int y)
+void openSecretSymbols(vector<secretSymbol>& secretSymbols, string symbol)
+{
+    for (unsigned int i = 0; i < secretSymbols.size(); i++) {
+        cout << secretSymbols[i].str << " - " << symbol << endl;
+        if (secretSymbols[i].str == symbol) {
+            secretSymbols[i].open = true;
+        }
+    }
+}
+
+void checkClick(
+        vector<keyboardSymbol> keyboardSymbols,
+        int x,
+        int y,
+        vector<secretSymbol>& secretSymbols)
 {
     for (unsigned int i = 0; i < keyboardSymbols.size(); i++) {
         if (keyboardSymbols[i].shape.getGlobalBounds().contains(x, y)) {
-            cout << keyboardSymbols[i].str;
+            openSecretSymbols(secretSymbols, keyboardSymbols[i].str);
         }
     }
 }
@@ -188,7 +202,7 @@ void startGame(RenderWindow& window, string (&words)[3][4])
     initKeyboard(keyboardSymbols);
 
     string theme;
-    string word = getRandomWord(words, theme);
+    string word = "тигр"; // getRandomWord(words, theme);
     vector<secretSymbol> secretSymbols = initSecretWord(word);
     int step = 12;
 
@@ -211,14 +225,15 @@ void startGame(RenderWindow& window, string (&words)[3][4])
                     checkClick(
                             keyboardSymbols,
                             event.mouseButton.x,
-                            event.mouseButton.y);
+                            event.mouseButton.y,
+                            secretSymbols);
                 }
             }
         }
 
         window.clear();
         window.draw(bg);
-        // drawKeyboard(window, keyboardSymbols);
+        drawKeyboard(window, keyboardSymbols);
         drawSecretSymbols(window, secretSymbols);
         drawWeigher(window, step);
         window.display();
