@@ -1,3 +1,3 @@
 #include <SFML/Graphics.hpp>
 
-void callMenu(sf::RenderWindow& window);
+int callMenu(sf::RenderWindow& window);
