@@ -210,6 +210,21 @@ string getRandomWord(string (&words)[3][4], string& theme)
     return words[a][rand() % 3 + 1];
 }
 
+void drawTheme(RenderWindow& window, string theme)
+{
+    Font font;
+    if (!font.loadFromFile("fonts/font.ttf")) {
+        cout << "Error, fonts/font.ttf not found" << endl;
+    }
+    Text themeText;
+    themeText.setFont(font);
+    themeText.setCharacterSize(25);
+    themeText.setFillColor(Color::Black);
+    themeText.setPosition(400, 40);
+    themeText.setString("Тема: " + theme);
+    window.draw(themeText);
+}
+
 void startGame(RenderWindow& window, string (&words)[3][4])
 {
     setlocale(LC_ALL, "Russian");
@@ -217,7 +232,7 @@ void startGame(RenderWindow& window, string (&words)[3][4])
     initKeyboard(keyboardSymbols);
 
     string theme;
-    string word = "тигр"; // getRandomWord(words, theme);
+    string word = getRandomWord(words, theme);
     vector<secretSymbol> secretSymbols = initSecretWord(word);
     int step = 0;
 
@@ -255,6 +270,7 @@ void startGame(RenderWindow& window, string (&words)[3][4])
         drawKeyboard(window, keyboardSymbols);
         drawSecretSymbols(window, secretSymbols);
         drawWeigher(window, step);
+        drawTheme(window, theme);
         window.display();
         sleep(milliseconds(1000 / 60));
     }
